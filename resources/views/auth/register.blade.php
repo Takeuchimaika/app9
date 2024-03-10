@@ -68,6 +68,13 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="button" onClick="window.location.href = '{{ route('login') }}'">
+                                    戻る
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
