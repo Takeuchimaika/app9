@@ -6,7 +6,7 @@
   <div class="container">
     <div class="mx-auto">
       <br>
-      <h2 class="text-center">商品検索画面</h2>
+      <h2 class="text-center">商品一覧画面</h2>
       <br>
       <div class="text-right">
       <a class="btn btn-success text-right mb-2 mt-2" href="{{ route('product.rebist')}}">新規登録</a>

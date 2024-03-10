@@ -48,7 +48,7 @@
             <div class="col-12 md-2 mt-2">
             <tr>価格</tr>
                 <div class="from-group">
-                    {{ $product->price }}
+                    ￥{{ $product->price }}
                 </div>
             </div>
             <div class="col-12 md-2 mt-2">

@@ -19,15 +19,17 @@
              <div class="row">
                 <div class="col-12 md-2 mt-2">
                     <div class="from-group">
+                    <label class="col-sm-2 col-form-label">商品名</label>
                     <span class="from-required" style="color:red;">*</span>
                         <input type="text" name="product_name" value="{{ $product->product_name }}" class="from-control" placeholder="名前">
                         @error('product_name')
-                        <span style="color:red;">名前を２０文字以内で入力してください</span>
+                        <span style="color:red;">商品名を２０文字以内で入力してください</span>
                         @enderror
                     </div>
                 </div>
                 <div class="col-12 md-2 mt-2">
                     <div class="from-group">
+                    <label class="col-sm-2 col-form-label">メーカー名</label>
                     <span class="from-required" style="color:red;">*</span>
                     <select name="company_id" class="from-select">
                         <option>メーカーを選択してください</option>
@@ -42,6 +44,7 @@
                 </div>
                 <div class="col-12 md-2 mt-2">
                     <div class="from-group">
+                    <label class="col-sm-2 col-form-label">価格</label>
                     <span class="from-required" style="color:red;">*</span>
                         <input type="text" name="price" value="{{ $product->price }}" class="from-control" placeholder="価格">
                         @error('price')
@@ -51,6 +54,7 @@
                 </div>
                 <div class="col-12 md-2 mt-2">
                     <div class="from-group">
+                    <label class="col-sm-2 col-form-label">在庫数</label>
                     <span class="from-required" style="color:red;">*</span>
                         <input type="text" name="stock" value="{{ $product->stock }}" class="from-control" placeholder="在庫数">
                         @error('stock')
@@ -60,11 +64,13 @@
                 </div>
                 <div class="col-12 md-2 mt-2">
                     <div class="from-group">
+                    <label class="col-sm-2 col-form-label">コメント</label>
                         <textarea class="from-control" style="height:100px" name="comment"  placeholder="コメント">{{ $product->comment }}</textarea>
                     </div>
                 </div>
                 <div class="col-12 md-2 mt-2">
                     <div class="from-group">
+                    <label class="col-sm-2 col-form-label">商品画像</label>
                         <input type="file" name="img_path" accept=".jpg,.png,image/gif,image/jpeg,image/png">
                     </div>
                 </div>

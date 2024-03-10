@@ -30,7 +30,7 @@
                     <div class="from-group">
                     <span class="from-required" style="color:red;">*</span>
                         <select name="company" class="from-select">
-                            <option>メーカーを選択してください</option>
+                            <option value='' >メーカーを選択してください</option>
                             @foreach ($companies as $company)
                                 <option value="{{ $company->id }}">{{ $company->company_name }}</option>
                             @endforeach
@@ -76,7 +76,7 @@
 
             
                 <div class="col-12 md-2 mt-2">
-                        <button type="submit" class="btn btn-primary w-100">新規作成
+                        <button type="submit" class="btn btn-primary w-100">新規登録
 
                         </button>
                 </div>

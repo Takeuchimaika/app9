@@ -36,7 +36,7 @@ class ProductController extends Controller
         }
 
         //$queryをcompany_idの昇順に並び替えて$productsに代入
-        $products = $query->orderBy('company_id', 'asc')->paginate(15);
+        $products = $query->orderBy('id', 'asc')->paginate(15);
 
         //companiesテーブルからgetLists();関数でcompany_nameとidを取得する
         $company = new Company;
@@ -96,6 +96,13 @@ class ProductController extends Controller
             'comment'=>'max:140',
         ]);
         $product = new Product;
+        // 画像が提供されている場合のみ処理を行う
+        if ($request->hasFile('img_path')) {
+        $img = $request->file('img_path');
+        $path = $img->store('img','public');
+        $product->img_path = $path;
+        }
+
         $product->product_name = $request->input(["product_name"]);
         $product->company_id = $request->input(["company_id"]);
         $product->price = $request->input(["price"]);
@@ -104,30 +111,30 @@ class ProductController extends Controller
         $product->save();
 
         ////画像フォームでリクエストした画像情報を取得
-        $img = $request->file('img_path');
+        //$img = $request->file('img_path');
         ////画面情報がセットされていれば、保存処理を実行
-        if (isset($img)) {
+        //if (isset($img)) {
         //// storage > public > img配下に画像が保存される
-        $path = $img->store('img','public');
+        //$path = $img->store('img','public');
             //// store処理が実行できたらDBに保存処理が実行
-        if ($path) {
+        //if ($path) {
             //DBに登録する処理
             //$product->img_path = $path;}
             // DBに登録する処理
-        Product::create([
-            'img_path' => $path,
-            'product_name' => $request->input("product_name"),
-            'company_id' => $request->input("company_id"),
-            'price' => $request->input("price"),
-            'stock' => $request->input("stock"),
-            'comment' => $request->input("comment"),
-        ]);
-        }
-        }
+        //Product::create([
+        //    'img_path' => $path,
+        //    'product_name' => $request->input("product_name"),
+        //    'company_id' => $request->input("company_id"),
+        //    'price' => $request->input("price"),
+        //    'stock' => $request->input("stock"),
+        //    'comment' => $request->input("comment"),
+        //]);
+        //}
+        //}
         // searchメソッドを呼び出して検索を行う
         //return $this->search($request, $searchWord, $bunruiId);
          //リダイレクト
-        return redirect()->route('product.index');
+        return redirect()->route('products.index');
     }
         //
     
@@ -166,7 +173,7 @@ class ProductController extends Controller
     /*==================================
     検索メソッド(search)
     ==================================*/
-    public function search(Request $request, $searchWord, $bunruiId)
+    public function search(Request $request)
     {
         //入力される値nameの中身を定義する
         $searchWord = $request->input('searchWord'); //商品名の値
@@ -181,9 +188,11 @@ class ProductController extends Controller
         if (isset($companyId)) {
             $query->where('company_id', $companyId);
         }
+        
+            
 
         //$queryをcompany_idの昇順に並び替えて$productsに代入
-        $products = $query->orderBy('company_id', 'asc')->paginate(15);
+        $products = $query->orderBy('id', 'asc')->paginate(15);
 
         //companiesテーブルからgetLists();関数でcompany_nameとidを取得する
         $company = new Company;
@@ -255,7 +264,7 @@ class ProductController extends Controller
         $product->comment = $request->input("comment");
         $product->save();
         
-        return redirect()->route('product.index')->with('success','商品を更新いたしました');
+        return redirect()->route('products.index')->with('success','商品を更新いたしました');
         
         //
     }
@@ -274,7 +283,7 @@ class ProductController extends Controller
        $product->delete();
        //削除したら一覧画面にリダイレクト
        //indexの部分をsearchかshowに変更しなくてはいけない。
-       return redirect()->route('product.index');
+       return redirect()->route('products.index');
 
         //
     }

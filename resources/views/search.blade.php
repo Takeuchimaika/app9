@@ -6,7 +6,7 @@
   <div class="container">
     <div class="mx-auto">
       <br>
-      <h2 class="text-center">商品検索画面</h2>
+      <h2 class="text-center">商品一覧画面</h2>
       <br>
       <div class="text-right">
                 <a class="btn btn-success text-right mb-2 mt-2" href="{{ route('product.rebist')}}">新規登録</a>
@@ -74,7 +74,11 @@
             <td><a class="" href="{{ route('product.show',$product->id) }}">{{ $product->product_name }}</a></td>
             <td style="text-align:right">¥{{ $product->price }}</td>
             <td style="text-align:right">{{ $product->stock }}</td>
-            <td style="text-align:right">{{ $product->company->company_name}}</td>
+            <td style="text-align:right">
+            @if($product->company)
+            {{ $product->company->company_name }}
+            @endif 
+            </td>
 
           <td><a href="{{ route('product.detail',$product->id) }}" class="btn btn-primary btn-sm">詳細</a></td>
           <td style="text-align:center">
