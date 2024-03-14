@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    //use HasFactory;
 
     //m_categoriesテーブルから::pluckでcategory_nameとidを抽出し、$categoriesに返す関数を作る
     public function getLists()
