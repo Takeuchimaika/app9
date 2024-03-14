@@ -18,12 +18,11 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+
         //入力される値nameの中身を定義する
         $searchWord = $request->input('searchWord'); //商品名の値
         $companyId = $request->input('companyId'); //カテゴリの値
-        //メーカー名表記にする
-        //$Product = Product::with('bunrui')->find(1);
-        ////echo $product->bunrui->str;
+        
         
         $query = Product::query();
         //商品名が入力された場合、productsテーブルから一致する商品を$queryに代入
@@ -42,7 +41,7 @@ class ProductController extends Controller
         $company = new Company;
         $companies = $company->getLists();
 
-        return view('search', [
+        return view('index', [
             'products' => $products,
             'companies' => $companies,
             'searchWord' => $searchWord,
@@ -50,11 +49,6 @@ class ProductController extends Controller
         ]);
 
 
-      
-
-
-        // searchメソッドを呼び出して検索を行う
-        //return $this->search($request, $searchWord, $bunruiId);
 
         $products = Product::latest()->paginate(5);
 
@@ -71,12 +65,7 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-        return view('product.create');
-
-        $companies = Company::all();
-        return view('create')
-            ->with('companies',$companies);
-        //
+        
     }
 
     /**
@@ -87,6 +76,7 @@ class ProductController extends Controller
      */
     public function store(Request $request, Product $Product)
     {
+        try {
         $request->validate([
             'img_path'=> 'image|mimes:jpeg,png,jpg,gif', // 画像のバリデーションルールを設定
             'product_name'=>'required|max:20',
@@ -108,33 +98,18 @@ class ProductController extends Controller
         $product->price = $request->input(["price"]);
         $product->stock = $request->input(["stock"]);
         $product->comment = $request->input(["comment"]);
+        // 商品情報を保存
         $product->save();
+        //リダイレクト
+        return redirect()->route('products.index');
 
-        ////画像フォームでリクエストした画像情報を取得
-        //$img = $request->file('img_path');
-        ////画面情報がセットされていれば、保存処理を実行
-        //if (isset($img)) {
-        //// storage > public > img配下に画像が保存される
-        //$path = $img->store('img','public');
-            //// store処理が実行できたらDBに保存処理が実行
-        //if ($path) {
-            //DBに登録する処理
-            //$product->img_path = $path;}
-            // DBに登録する処理
-        //Product::create([
-        //    'img_path' => $path,
-        //    'product_name' => $request->input("product_name"),
-        //    'company_id' => $request->input("company_id"),
-        //    'price' => $request->input("price"),
-        //    'stock' => $request->input("stock"),
-        //    'comment' => $request->input("comment"),
-        //]);
-        //}
-        //}
-        // searchメソッドを呼び出して検索を行う
-        //return $this->search($request, $searchWord, $bunruiId);
+        } catch (QueryException $e) {
+             // エラーが発生した場合の処理
+
+       
          //リダイレクト
         return redirect()->route('products.index');
+        }
     }
         //
     
@@ -160,7 +135,7 @@ class ProductController extends Controller
         $searchWord = $request->input('searchWord');
         $companyId = $request->input('companyId');
 
-        return view('search', [
+        return view('index', [
             'companies' => $companies,
             'searchWord' => $searchWord,
             'companyId' => $companyId
@@ -198,7 +173,7 @@ class ProductController extends Controller
         $company = new Company;
         $companies = $company->getLists();
 
-        return view('search', [
+        return view('index', [
             'products' => $products,
             'companies' => $companies,
             'searchWord' => $searchWord,
@@ -235,6 +210,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        try {
         $request->validate([
             'img_path' => 'image|mimes:jpeg,png,jpg,gif',
             'product_name'=>'required|max:20',
@@ -263,9 +239,11 @@ class ProductController extends Controller
         $product->stock = $request->input("stock");
         $product->comment = $request->input("comment");
         $product->save();
-        
+        return redirect()->route('products.index');
+        } catch (QueryException $e) {
+        // エラーが発生した場合の処理
         return redirect()->route('products.index')->with('success','商品を更新いたしました');
-        
+        } 
         //
     }
 
@@ -277,13 +255,19 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+       try {
         //アイテムテーブルから指定のIDのレコード一件を取得
-       $product = Product::find($id);
-       //レコードを削除
-       $product->delete();
-       //削除したら一覧画面にリダイレクト
-       //indexの部分をsearchかshowに変更しなくてはいけない。
-       return redirect()->route('products.index');
+        $product = Product::find($id);
+        //レコードを削除
+        $product->delete();
+        //削除したら一覧画面にリダイレクト
+        return redirect()->route('products.index');
+
+        // リダイレクトなどの処理
+    } catch (QueryException $e) {
+        // エラーが発生した場合の処理
+        return redirect()->route('products.index');
+    }
 
         //
     }

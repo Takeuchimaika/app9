@@ -12,9 +12,9 @@
       <a class="btn btn-success text-right mb-2 mt-2" href="{{ route('product.rebist')}}">新規登録</a>
         </div>
       <!--検索フォーム-->
-      <div class="row">
+      <div class="search">
         <div class="col-sm">
-          <form method="GET" action="{{ route('search')}}">
+          <form method="GET" action="{{ route('index')}}">
           
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">検索キーワード</label>
@@ -71,10 +71,14 @@
             <td>
                 <img src="{{asset('storage/' . $product->img_path)}}" style="text-align:left"  class="img-fluid">
             </td>
-            <td><a class="" href="{{ route('product.show',$product->id) }}">{{ $product>product_name  }}</a></td>
+            <td style="text-align:left">{{ $product->product_name  }}</a></td>
             <td style="text-align:right">¥{{ $product->price }}</td>
             <td style="text-align:right">{{ $product->stock }}</td>
-            <td style="text-align:right">{{ $product->company_id }}</td>
+            <td style="text-align:right">
+            @if($product->company)
+            {{ $product->company->company_name }}
+            @endif 
+          </td>
 
           <td><a href="{{ route('product.detail',$product->id) }}" class="btn btn-primary btn-sm">詳細</a></td>
           <td style="text-align:center">
@@ -90,10 +94,7 @@
     </div>
     <!--テーブルここまで-->
     <!--ページネーション-->
-    <div class="d-flex justify-content-center">
-      {{-- appendsでカテゴリを選択したまま遷移 --}}
-      {{ $products->appends(request()->input())->links() }}
-    </div>
+    {!! $products->links('pagination::bootstrap-5') !!}
     <!--ページネーションここまで-->
     @endif
   </div>
